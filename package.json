@@ -1,7 +1,7 @@
 {
   "name": "mysql-init",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
@@ -14,9 +14,12 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.6",
     "nodemon": "^3.1.0",
-    "pymysql": "^1.0.0"
+    "pymysql": "^1.0.0",
+    "sharp": "^0.33.3"
   }
 }
