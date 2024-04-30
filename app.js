@@ -2,38 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 const connectToMySQL = require('./connection/mysql_init');
 const multer = require('multer');
 
 const app = express();
 
-const limiter = rateLimit({
-    windowMs: 10 * 1000, // 1 detik
-    max: 5,
-    message: 'Too many requests from this IP, please try again later',
-    skipFailedRequests: true,
-    skipSuccessfulRequests: false,
-});
-
-app.use(limiter);
-
-// Middleware untuk menunda akses setelah mencapai limit
-const delayMiddleware = (req, res, next) => {
-    if (res.headersSent) {
-        return next();
-    }
-
-    // Cek apakah batas limit telah tercapai
-    if (req.rateLimit.remaining === 0) {
-        setTimeout(next, 60000); // 1 menit
-    } else {
-        next(); // Lanjutkan tanpa penundaan jika batas limit belum tercapai
-    }
-};
-
 // Routes
-app.get('/', delayMiddleware, async (req, res) => {
+app.get('/', async (req, res) => {
     try {
         const connection = await connectToMySQL();
         const status = 'success';
@@ -52,7 +27,7 @@ app.get('/', delayMiddleware, async (req, res) => {
     }
 });
 
-app.get('/users', delayMiddleware, async (req, res) => {
+app.get('/users', async (req, res) => {
     try {
         const connection = await connectToMySQL();
         const [rows, fields] = await connection.execute('SELECT * FROM Sales');
@@ -63,7 +38,7 @@ app.get('/users', delayMiddleware, async (req, res) => {
     }
 });
 
-app.get('/data', delayMiddleware, async (req, res) => {
+app.get('/data', async (req, res) => {
     try {
         const connection = await connectToMySQL();
         const [rows, fields] = await connection.execute(`
@@ -199,7 +174,7 @@ app.post('/register', upload.single('photo'), async (req, res) => {
     }
 });
 
-app.get('/image/:username', delayMiddleware, (req, res) => {
+app.get('/image/:username', async (req, res) => {
     try {
         const username = req.params.username;
         const uploadsDir = 'uploads';
