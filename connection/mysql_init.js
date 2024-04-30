@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const config = require('../model/mysql_config');
+const config = require('../model/mysql_config'); // Menggunakan konfigurasi dari file mysql_config.js
 
 async function connectToMySQL() {
     console.log('Attempting to connect to MySQL...');

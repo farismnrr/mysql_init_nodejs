@@ -1,5 +1,6 @@
-require('dotenv').config();
 const fs = require('fs');
+
+require('dotenv').config();
 
 const config = {
     host: process.env.DB_HOST,
